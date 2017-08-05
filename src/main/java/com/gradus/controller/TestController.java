@@ -20,7 +20,7 @@ public class TestController {
         this.testService = testService;
     }
 
-    @RequestMapping(path = "/ping", method = RequestMethod.GET)
+    @RequestMapping(path = "/", method = RequestMethod.GET)
     public String ping() {
         return "Pong";
     }
