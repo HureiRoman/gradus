@@ -8,5 +8,5 @@ import java.util.Date;
 import java.util.List;
 
 public interface TemperatureHistoryDao extends CrudRepository<TemperatureHistory, ObjectId> {
-    List<TemperatureHistory> findDateBetween(Date dateFrom, Date dateTo);
+    List<TemperatureHistory> findByDateBetween(Date dateFrom, Date dateTo);
 }

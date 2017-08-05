@@ -22,6 +22,6 @@ public class TemperatureHistoryService {
     }
 
     public List<TemperatureHistory> getTemperatureHistory(GetTemperatureHistoryDto getHistoryDto) {
-        return temperatureHistoryDao.findDateBetween(getHistoryDto.getDateFrom(), getHistoryDto.getDateTo());
+        return temperatureHistoryDao.findByDateBetween(getHistoryDto.getDateFrom(), getHistoryDto.getDateTo());
     }
 }
