@@ -5,10 +5,12 @@ import com.gradus.constants.FanState;
 import com.gradus.constants.Mode;
 import com.gradus.dao.ConditionerSettingDao;
 import com.gradus.domain.ConditionerSetting;
+import com.gradus.dto.UpdateSettingDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,10 +29,18 @@ public class ConditionerSettingService {
         return conditionerSettingDao.findAll();
     }
 
-    public List<ConditionerSetting> saveSettings(final List<ConditionerSetting> conditionerSettings) {
-       setDefaultValues(conditionerSettings);
+    public List<ConditionerSetting> saveSettings(final UpdateSettingDto conditionerSettings) {
+       setDefaultValues(conditionerSettings.getSettings());
        deleteAllPreviousSettings();
-        return conditionerSettingDao.save(conditionerSettings);
+
+       List<ConditionerSetting> savedSettings = new ArrayList<>();
+
+       for (ConditionerSetting conditionerSetting: conditionerSettings.getSettings()) {
+           conditionerSetting.setId(null);
+           savedSettings.add(conditionerSettingDao.save(conditionerSetting));
+       }
+
+        return savedSettings;
     }
 
     private void deleteAllPreviousSettings() {
@@ -48,7 +58,7 @@ public class ConditionerSettingService {
     }
 
     public String getHexCode() {
-        ConditionerSetting setting = conditionerSettingDao.findAll().get(0);
+        ConditionerSetting setting = findCurrentSettings();
 
         if (setting == null) {
            return null;

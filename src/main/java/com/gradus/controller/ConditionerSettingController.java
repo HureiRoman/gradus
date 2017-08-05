@@ -1,6 +1,7 @@
 package com.gradus.controller;
 
 import com.gradus.domain.ConditionerSetting;
+import com.gradus.dto.UpdateSettingDto;
 import com.gradus.service.ConditionerSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -33,8 +34,8 @@ public class ConditionerSettingController {
     }
 
     @RequestMapping(path = "/settings", method = RequestMethod.POST)
-    public List<ConditionerSetting> updateSettings(@RequestBody List<ConditionerSetting> conditionerSettings) {
-        return conditionerSettingService.saveSettings(conditionerSettings);
+    public List<ConditionerSetting> updateSettings(@RequestBody UpdateSettingDto updateSettingDto) {
+        return conditionerSettingService.saveSettings(updateSettingDto);
     }
 
     @RequestMapping(path = "/setting/hex", method = RequestMethod.GET)

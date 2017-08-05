@@ -9,9 +9,9 @@ import java.awt.print.Book;
 import java.util.List;
 
 public interface ConditionerSettingDao extends CrudRepository<ConditionerSetting, ObjectId> {
-    List<ConditionerSetting> save(List<ConditionerSetting> settings);
+    ConditionerSetting save(ConditionerSetting settings);
     List<ConditionerSetting> findAll();
 
-    @Query("{ 'minutes_before' : { $gte: ?0}, 'minutes_after': {$lte: ?0} }")
+    @Query("{$and: [{ 'minutesFrom' : { $lte: ?0}, 'minutesTo': {$gte: ?0} }]}")
     ConditionerSetting findMinutesBetween(Integer currentDayMinutes);
 }
