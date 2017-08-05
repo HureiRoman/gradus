@@ -21,4 +21,7 @@ public class ConditionerSetting {
 
     @Field
     private Integer temperature;
+
+    @Field
+    private Boolean isOn = false;
 }
