@@ -54,13 +54,13 @@ public class ConditionerSettingService {
     private String getCheckSum(Integer checkSumWithoutMask, Integer hextCodeInt) {
         Integer checkSumWithMask = populateBinaryStringWithOnes(checkSumWithoutMask);
 
-        return Integer.toString(checkSumWithMask & hextCodeInt, 2);
+        return Integer.toString(checkSumWithMask | hextCodeInt, 16);
     }
 
     private Integer populateBinaryStringWithOnes(Integer checkSumWithoutMask) {
         String binaryString =  Integer.toString(checkSumWithoutMask,2);
-        String checkSumWithMask = ("111111111111111111111111" + binaryString).substring(binaryString.length());
-        return Integer.parseInt(checkSumWithMask);
+        String checkSumWithMask = ("000000000000000000000000" + binaryString).substring(binaryString.length());
+        return Integer.parseInt(checkSumWithMask,2);
     }
 
     private Integer calculateCheckSumWithoutMask(ConditionerSetting setting) {
