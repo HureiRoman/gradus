@@ -19,6 +19,12 @@ public class ConditionerSettingController {
         this.conditionerSettingService = conditionerSettingService;
     }
 
+    @RequestMapping(path = "/", method = RequestMethod.GET)
+    public String ping() {
+        return "Poing";
+    }
+
+
     @RequestMapping(path = "/setting", method = RequestMethod.GET)
     public ConditionerSetting getSettings() {
         return conditionerSettingService.findSettings();
