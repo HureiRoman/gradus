@@ -48,7 +48,7 @@ public class ConditionerSettingService {
     }
 
     public String getHexCode() {
-        ConditionerSetting setting = findCurrentSettings();
+        ConditionerSetting setting = conditionerSettingDao.findAll().get(0);
 
         if (setting == null) {
            return null;
