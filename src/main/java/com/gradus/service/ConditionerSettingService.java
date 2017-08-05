@@ -1,17 +1,20 @@
 package com.gradus.service;
 
 import com.gradus.constants.ConditionerState;
+import com.gradus.constants.FanState;
+import com.gradus.constants.Mode;
 import com.gradus.dao.ConditionerSettingDao;
 import com.gradus.domain.ConditionerSetting;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ConditionerSettingService {
     private static final Integer CHECK_SUM_SHIFT = 4;
     private static final Integer TEMPERATURE_SHIFT = 15;
-    private final ObjectId defaultId = new ObjectId("111111111111111111111111");
 
     private final ConditionerSettingDao conditionerSettingDao;
 
@@ -20,19 +23,32 @@ public class ConditionerSettingService {
         this.conditionerSettingDao = conditionerSettingDao;
     }
 
-    public ConditionerSetting findSettings() {
-        return conditionerSettingDao.findOne(defaultId);
+    public List<ConditionerSetting> findSettings() {
+        return conditionerSettingDao.findAll();
     }
 
-    public ConditionerSetting updateSettings(final ConditionerSetting conditionerSetting) {
-        conditionerSetting.setId(defaultId);
-        conditionerSetting.setUnknown1(8);
-        conditionerSetting.setUnknown2(8);
-        return conditionerSettingDao.save(conditionerSetting);
+    public List<ConditionerSetting> saveSettings(final List<ConditionerSetting> conditionerSettings) {
+       setDefaultValues(conditionerSettings);
+       deleteAllPreviousSettings();
+        return conditionerSettingDao.save(conditionerSettings);
+    }
+
+    private void deleteAllPreviousSettings() {
+        conditionerSettingDao.deleteAll();
+    }
+
+    private void setDefaultValues(List<ConditionerSetting> conditionerSettings) {
+        for (ConditionerSetting setting: conditionerSettings) {
+            setting.setUnknown1(8);
+            setting.setUnknown2(8);
+            setting.setFanState(FanState.Max);
+            setting.setMode(Mode.Cooling);
+            setting.setIsOn(true);
+        }
     }
 
     public String getHexCode() {
-        ConditionerSetting setting = findSettings();
+        ConditionerSetting setting = findCurrentSettings();
 
         if (setting == null) {
            return null;
@@ -42,6 +58,16 @@ public class ConditionerSettingService {
         Integer hextCodeInt = Integer.parseInt(hexCode, 2);
 
         return getHexCodeWithCheckSum(hextCodeInt, setting);
+    }
+
+    private ConditionerSetting findCurrentSettings() {
+        return conditionerSettingDao.findMinutesBetween(getCurrentDayMinutes());
+    }
+
+    private Integer getCurrentDayMinutes() {
+        LocalDateTime now = LocalDateTime.now();
+
+        return now.getHour() * 60 + now.getMinute();
     }
 
     private String getHexCodeWithCheckSum(Integer hextCodeInt, ConditionerSetting setting) {
@@ -54,7 +80,7 @@ public class ConditionerSettingService {
     private String getCheckSum(Integer checkSumWithoutMask, Integer hextCodeInt) {
         Integer checkSumWithMask = populateBinaryStringWithOnes(checkSumWithoutMask);
 
-        return "0x" + Integer.toString(checkSumWithMask | hextCodeInt, 16);
+        return "[0x" + Integer.toString(checkSumWithMask | hextCodeInt, 16) + "]";
     }
 
     private Integer populateBinaryStringWithOnes(Integer checkSumWithoutMask) {

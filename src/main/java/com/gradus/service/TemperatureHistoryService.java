@@ -2,7 +2,6 @@ package com.gradus.service;
 
 import com.gradus.dao.TemperatureHistoryDao;
 import com.gradus.domain.TemperatureHistory;
-import com.gradus.dto.GetTemperatureHistoryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,11 @@ public class TemperatureHistoryService {
         return temperatureHistoryDao.save(temperatureHistory);
     }
 
-    public List<TemperatureHistory> getTemperatureHistory(GetTemperatureHistoryDto getHistoryDto) {
-        return temperatureHistoryDao.findByDateBetween(getHistoryDto.getDateFrom(), getHistoryDto.getDateTo());
+    public List<TemperatureHistory> getTemperatureHistory() {
+        return temperatureHistoryDao.findTop20ByOrderByDateDesc();
+    }
+
+    public TemperatureHistory getLatestHistory() {
+        return temperatureHistoryDao.findTopByOrderByDateDesc();
     }
 }

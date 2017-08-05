@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @CrossOrigin(origins="*", allowedHeaders="*", methods={RequestMethod.POST, RequestMethod.GET})
 @RestController
 public class ConditionerSettingController {
@@ -26,13 +28,13 @@ public class ConditionerSettingController {
 
 
     @RequestMapping(path = "/setting", method = RequestMethod.GET)
-    public ConditionerSetting getSettings() {
+    public List<ConditionerSetting> getSettings() {
         return conditionerSettingService.findSettings();
     }
 
     @RequestMapping(path = "/settings", method = RequestMethod.POST)
-    public ConditionerSetting updateSettings(@RequestBody ConditionerSetting conditionerSetting) {
-        return conditionerSettingService.updateSettings(conditionerSetting);
+    public List<ConditionerSetting> updateSettings(@RequestBody List<ConditionerSetting> conditionerSettings) {
+        return conditionerSettingService.saveSettings(conditionerSettings);
     }
 
     @RequestMapping(path = "/setting/hex", method = RequestMethod.GET)

@@ -1,8 +1,6 @@
 package com.gradus.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.gradus.constants.FanState;
-import com.gradus.constants.Mode;
 import com.gradus.deserializer.ObjectIdJsonSerializer;
 import lombok.Data;
 import org.bson.types.ObjectId;
@@ -12,9 +10,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Data
-@TypeAlias("conditioner_setting")
-@Document(collection="conditioner_setting")
-public class ConditionerSetting {
+@TypeAlias("weekly_setting")
+@Document(collection="weekly_setting")
+public class WeeklySetting {
 
     @Id
     @Field
@@ -22,27 +20,24 @@ public class ConditionerSetting {
     private ObjectId id;
 
     @Field
-    private Integer unknown1;
+    private Boolean isMonday = true;
 
     @Field
-    private Integer unknown2;
+    private Boolean isTuesday = true;
 
     @Field
-    private Boolean isOn = false;
+    private Boolean isWednesday = true;
 
     @Field
-    private Mode mode;
+    private Boolean isThursday = true;
 
     @Field
-    private Integer temperature;
+    private Boolean isFriday = true;
 
     @Field
-    private FanState fanState;
+    private Boolean isSaturday = true;
 
     @Field
-    private Integer minutesFrom;
-
-    @Field
-    private Integer minutesTo;
+    private Boolean isSunday = true;
 
 }

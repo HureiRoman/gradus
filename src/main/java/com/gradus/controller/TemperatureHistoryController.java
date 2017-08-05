@@ -1,7 +1,6 @@
 package com.gradus.controller;
 
 import com.gradus.domain.TemperatureHistory;
-import com.gradus.dto.GetTemperatureHistoryDto;
 import com.gradus.service.TemperatureHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,13 +21,18 @@ public class TemperatureHistoryController {
         this.temperatureHistoryService = temperatureHistoryService;
     }
 
-    @RequestMapping(path = "/", method = RequestMethod.POST)
+    @RequestMapping(path = "/temperature-history", method = RequestMethod.POST)
     public TemperatureHistory add(@RequestBody TemperatureHistory temperatureHistory) {
         return temperatureHistoryService.add(temperatureHistory);
     }
 
-    @RequestMapping(path = "/temperature-history", method = RequestMethod.POST)
-    public List<TemperatureHistory> add(@RequestBody GetTemperatureHistoryDto getTemperatureHistoryDto) {
-        return temperatureHistoryService.getTemperatureHistory(getTemperatureHistoryDto);
+    @RequestMapping(path = "/temperature-histories", method = RequestMethod.GET)
+    public List<TemperatureHistory> getTemperatureHistory() {
+        return temperatureHistoryService.getTemperatureHistory();
+    }
+
+    @RequestMapping(path = "/temperature-histories/latest", method = RequestMethod.GET)
+    public TemperatureHistory getLatestHistory() {
+        return temperatureHistoryService.getLatestHistory();
     }
 }
