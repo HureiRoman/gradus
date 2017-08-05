@@ -28,7 +28,7 @@ public class ConditionerSettingController {
     }
 
 
-    @RequestMapping(path = "/setting", method = RequestMethod.GET)
+    @RequestMapping(path = "/settings", method = RequestMethod.GET)
     public List<ConditionerSetting> getSettings() {
         return conditionerSettingService.findSettings();
     }

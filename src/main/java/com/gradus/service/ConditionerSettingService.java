@@ -90,7 +90,7 @@ public class ConditionerSettingService {
     private String getCheckSum(Integer checkSumWithoutMask, Integer hextCodeInt) {
         Integer checkSumWithMask = populateBinaryStringWithOnes(checkSumWithoutMask);
 
-        return "[0x" + Integer.toString(checkSumWithMask | hextCodeInt, 16) + "]";
+        return "[" + Integer.toString(checkSumWithMask | hextCodeInt, 16) + "]";
     }
 
     private Integer populateBinaryStringWithOnes(Integer checkSumWithoutMask) {
