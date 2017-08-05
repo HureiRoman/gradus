@@ -28,4 +28,10 @@ public class ConditionerSettingController {
     public ConditionerSetting updateSettings(@RequestBody ConditionerSetting conditionerSetting) {
         return conditionerSettingService.updateSettings(conditionerSetting);
     }
+
+    @RequestMapping(path = "/setting/hex", method = RequestMethod.GET)
+    public String getSettingsHex() {
+        return conditionerSettingService.getHexCode();
+    }
+
 }

@@ -1,6 +1,8 @@
 package com.gradus.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.gradus.constants.FanState;
+import com.gradus.constants.Mode;
 import com.gradus.deserializer.ObjectIdJsonSerializer;
 import lombok.Data;
 import org.bson.types.ObjectId;
@@ -20,8 +22,21 @@ public class ConditionerSetting {
     private ObjectId id;
 
     @Field
-    private Integer temperature;
+    private Integer unknown1;
+
+    @Field
+    private Integer unknown2;
 
     @Field
     private Boolean isOn = false;
+
+    @Field
+    private Mode mode;
+
+    @Field
+    private Integer temperature;
+
+    @Field
+    private FanState fanState;
+
 }
