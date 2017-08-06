@@ -23,7 +23,7 @@ public class TemperatureHistoryService {
         if (temperatureHistory.getHumidity() != null && temperatureHistory.getTemperature() != null) {
             temperatureHistoryDao.save(temperatureHistory);
         }
-        
+
         return conditionerSettingService.getHexCode();
     }
 
