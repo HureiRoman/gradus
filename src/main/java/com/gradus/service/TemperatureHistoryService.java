@@ -10,14 +10,18 @@ import java.util.List;
 @Service
 public class TemperatureHistoryService {
     private final TemperatureHistoryDao temperatureHistoryDao;
+    private final ConditionerSettingService conditionerSettingService;
 
     @Autowired
-    public TemperatureHistoryService(final TemperatureHistoryDao temperatureHistoryDao) {
+    public TemperatureHistoryService(final TemperatureHistoryDao temperatureHistoryDao,
+                             final ConditionerSettingService conditionerSettingService) {
         this.temperatureHistoryDao = temperatureHistoryDao;
+        this.conditionerSettingService = conditionerSettingService;
     }
 
-    public TemperatureHistory add(TemperatureHistory temperatureHistory) {
-        return temperatureHistoryDao.save(temperatureHistory);
+    public String add(TemperatureHistory temperatureHistory) {
+        temperatureHistoryDao.save(temperatureHistory);
+        return conditionerSettingService.getHexCode();
     }
 
     public List<TemperatureHistory> getTemperatureHistory() {
