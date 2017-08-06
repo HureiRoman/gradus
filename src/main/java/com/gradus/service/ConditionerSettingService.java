@@ -70,7 +70,7 @@ public class ConditionerSettingService {
 
         String hexCode = getHexCodeWithCheckSum(hextCodeInt, setting);
 
-        if (hexCode != null && !hexCode.trim().equals("")) {
+        if (hexCode == null || !hexCode.trim().equals("")) {
            return hexCode;
         }
 
