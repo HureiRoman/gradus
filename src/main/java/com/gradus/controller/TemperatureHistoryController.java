@@ -22,7 +22,7 @@ public class TemperatureHistoryController {
     }
 
     @RequestMapping(path = "/temperature-history", method = RequestMethod.POST)
-    public TemperatureHistory add(@RequestBody TemperatureHistory temperatureHistory) {
+    public String add(@RequestBody TemperatureHistory temperatureHistory) {
         return temperatureHistoryService.add(temperatureHistory);
     }
 
