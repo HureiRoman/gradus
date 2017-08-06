@@ -19,7 +19,7 @@ public class ConditionerSettingService {
     private static final Integer TEMPERATURE_SHIFT = 15;
 
     private final ConditionerSettingDao conditionerSettingDao;
-    private final String TURN_OFF_HEX_VALUE = "143392849";
+    private final String TURN_OFF_HEX_VALUE = "[143392849]";
 
     @Autowired
     public ConditionerSettingService(final ConditionerSettingDao conditionerSettingDao) {
