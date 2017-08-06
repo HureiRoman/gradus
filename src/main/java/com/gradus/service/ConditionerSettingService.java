@@ -66,7 +66,7 @@ public class ConditionerSettingService {
     public String getHexCode() {
         ConditionerSetting setting = findCurrentSettings();
 
-        if (setting == null || isWrongDay()) {
+        if (setting == null || !isRightDay()) {
             return TURN_OFF_HEX_VALUE;
         }
 
@@ -76,7 +76,7 @@ public class ConditionerSettingService {
         return getHexCodeWithCheckSum(hextCodeInt, setting);
     }
 
-    private Boolean isWrongDay() {
+    private Boolean isRightDay() {
         WeeklySetting weeklySetting = weeklySettingService.get();
 
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Europe/Kiev"));
