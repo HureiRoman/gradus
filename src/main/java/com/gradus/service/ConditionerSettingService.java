@@ -117,7 +117,7 @@ public class ConditionerSettingService {
         hexCode += populateBinaryStringWithZeros(setting.getUnknown1());
         hexCode += populateBinaryStringWithZeros(setting.getUnknown2());
         hexCode += populateBinaryStringWithZeros(getIsOnBinaryValue(setting.getIsOn()));
-        hexCode += populateBinaryStringWithZeros(setting.getMode().getValue());
+        hexCode += populateBinaryStringWithZeros(0);
         hexCode += populateBinaryStringWithZeros(setting.getTemperature() - TEMPERATURE_SHIFT);
         hexCode += populateBinaryStringWithZeros(setting.getFanState().getValue());
 
