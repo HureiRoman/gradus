@@ -90,7 +90,7 @@ public class ConditionerSettingService {
     private String getCheckSum(Integer checkSumWithoutMask, Integer hextCodeInt) {
         Integer checkSumWithMask = populateBinaryStringWithOnes(checkSumWithoutMask);
 
-        return "[" + Integer.toString(checkSumWithMask | hextCodeInt, 10) + "]";
+        return "[" + Integer.toString(checkSumWithMask | hextCodeInt, 2) + "]";
     }
 
     private Integer populateBinaryStringWithOnes(Integer checkSumWithoutMask) {
@@ -101,7 +101,7 @@ public class ConditionerSettingService {
 
     private Integer calculateCheckSumWithoutMask(ConditionerSetting setting) {
         Integer checkSum = (setting.getTemperature() - TEMPERATURE_SHIFT)
-                + setting.getMode().getValue() + setting.getUnknown1() + setting.getUnknown2()
+                + 0 + setting.getUnknown1() + setting.getUnknown2()
                 + setting.getFanState().getValue() + getIsOnBinaryValue(setting.getIsOn());
 
         return checkSum % 16;
