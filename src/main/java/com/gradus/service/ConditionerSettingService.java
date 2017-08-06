@@ -19,6 +19,7 @@ public class ConditionerSettingService {
     private static final Integer TEMPERATURE_SHIFT = 15;
 
     private final ConditionerSettingDao conditionerSettingDao;
+    private final String TURN_OFF_HEX_VALUE = "143392849";
 
     @Autowired
     public ConditionerSettingService(final ConditionerSettingDao conditionerSettingDao) {
@@ -64,10 +65,16 @@ public class ConditionerSettingService {
            return null;
         }
 
-        String hexCode = buildHexCode(setting);
-        Integer hextCodeInt = Integer.parseInt(hexCode, 2);
+        String hexCodeWithoutChecksum = buildHexCode(setting);
+        Integer hextCodeInt = Integer.parseInt(hexCodeWithoutChecksum, 2);
 
-        return getHexCodeWithCheckSum(hextCodeInt, setting);
+        String hexCode = getHexCodeWithCheckSum(hextCodeInt, setting);
+
+        if (hexCode != null && !hexCode.trim().equals("")) {
+           return hexCode;
+        }
+
+        return TURN_OFF_HEX_VALUE;
     }
 
     private ConditionerSetting findCurrentSettings() {
