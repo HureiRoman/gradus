@@ -5,11 +5,13 @@ import com.gradus.constants.FanState;
 import com.gradus.constants.Mode;
 import com.gradus.dao.ConditionerSettingDao;
 import com.gradus.domain.ConditionerSetting;
+import com.gradus.domain.WeeklySetting;
 import com.gradus.dto.UpdateSettingDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +21,14 @@ public class ConditionerSettingService {
     private static final Integer TEMPERATURE_SHIFT = 15;
 
     private final ConditionerSettingDao conditionerSettingDao;
+    private final WeeklySettingService weeklySettingService;
     private final String TURN_OFF_HEX_VALUE = "[143392849]";
 
     @Autowired
-    public ConditionerSettingService(final ConditionerSettingDao conditionerSettingDao) {
+    public ConditionerSettingService(final ConditionerSettingDao conditionerSettingDao,
+                                     final WeeklySettingService weeklySettingService) {
         this.conditionerSettingDao = conditionerSettingDao;
+        this.weeklySettingService = weeklySettingService;
     }
 
     public List<ConditionerSetting> findSettings() {
@@ -61,7 +66,7 @@ public class ConditionerSettingService {
     public String getHexCode() {
         ConditionerSetting setting = findCurrentSettings();
 
-        if (setting == null) {
+        if (setting == null || isWrongDay()) {
             return TURN_OFF_HEX_VALUE;
         }
 
@@ -71,14 +76,39 @@ public class ConditionerSettingService {
         return getHexCodeWithCheckSum(hextCodeInt, setting);
     }
 
+    private Boolean isWrongDay() {
+        WeeklySetting weeklySetting = weeklySettingService.get();
+
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Europe/Kiev"));
+
+        switch (now.getDayOfWeek()) {
+            case MONDAY:
+                return weeklySetting.getIsMonday();
+            case TUESDAY:
+                return weeklySetting.getIsTuesday();
+            case WEDNESDAY:
+                return weeklySetting.getIsWednesday();
+            case THURSDAY:
+                return weeklySetting.getIsThursday();
+            case FRIDAY:
+                return weeklySetting.getIsFriday();
+            case SATURDAY:
+                return weeklySetting.getIsSaturday();
+            case SUNDAY:
+                return weeklySetting.getIsSunday();
+        }
+
+        return false;
+    }
+
     private ConditionerSetting findCurrentSettings() {
         return conditionerSettingDao.findMinutesBetween(getCurrentDayMinutes());
     }
 
     private Integer getCurrentDayMinutes() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Europe/Kiev"));
 
-        return (now.getHour() + 3) * 60 + now.getMinute();
+        return now.getHour() * 60 + now.getMinute();
     }
 
     private String getHexCodeWithCheckSum(Integer hextCodeInt, ConditionerSetting setting) {
