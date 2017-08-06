@@ -62,19 +62,13 @@ public class ConditionerSettingService {
         ConditionerSetting setting = findCurrentSettings();
 
         if (setting == null) {
-           return null;
+            return TURN_OFF_HEX_VALUE;
         }
 
         String hexCodeWithoutChecksum = buildHexCode(setting);
         Integer hextCodeInt = Integer.parseInt(hexCodeWithoutChecksum, 2);
 
-        String hexCode = getHexCodeWithCheckSum(hextCodeInt, setting);
-
-        if (hexCode == null || !hexCode.trim().equals("")) {
-           return hexCode;
-        }
-
-        return TURN_OFF_HEX_VALUE;
+        return getHexCodeWithCheckSum(hextCodeInt, setting);
     }
 
     private ConditionerSetting findCurrentSettings() {
@@ -108,7 +102,7 @@ public class ConditionerSettingService {
 
     private Integer calculateCheckSumWithoutMask(ConditionerSetting setting) {
         Integer checkSum = (setting.getTemperature() - TEMPERATURE_SHIFT)
-                + 0 + setting.getUnknown1() + setting.getUnknown2()
+                + setting.getUnknown1() + setting.getUnknown2()
                 + setting.getFanState().getValue() + getIsOnBinaryValue(setting.getIsOn());
 
         return checkSum % 16;
