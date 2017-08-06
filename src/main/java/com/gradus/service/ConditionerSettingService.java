@@ -77,7 +77,7 @@ public class ConditionerSettingService {
     private Integer getCurrentDayMinutes() {
         LocalDateTime now = LocalDateTime.now();
 
-        return now.getHour() * 60 + now.getMinute();
+        return (now.getHour() + 3) * 60 + now.getMinute();
     }
 
     private String getHexCodeWithCheckSum(Integer hextCodeInt, ConditionerSetting setting) {
